@@ -20,11 +20,13 @@ from django.views.generic import TemplateView
 from django.views.generic.list import ListView
 from django.urls import path
 from demo.views import DataListView
+from utr5.views import UTR5ListView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', TemplateView.as_view(template_name='home.html'), name='home'),
-    path('demo/', DataListView.as_view(), name='demo')
+    path('demo/', DataListView.as_view(), name='demo'),
+    path('utr5/', UTR5ListView.as_view(), name='utr5'),
 
 ]
 

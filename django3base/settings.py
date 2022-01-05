@@ -48,6 +48,8 @@ INSTALLED_APPS = [
 
     'demo',
 
+    'utr5',
+
 ]
 
 TAILWIND_APP_NAME = 'theme'
