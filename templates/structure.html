@@ -1,0 +1,158 @@
+{% extends 'base.html'%}
+
+{%block content%}
+
+
+<div class='container' >
+    <div class="py-2">
+        <span class="order-1 text-2xl sm:text-4xl sm:leading-none font-extrabold tracking-tight text-teal-700 mb-4">Choose Protein</span>
+        <button onclick='load_GFP()'  class="mr-2 bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">
+        GFP
+        </button>
+        <button onclick='load_Nluc()'  class="mr-2 bg-orange-500 hover:bg-orange-700 text-white font-bold py-2 px-4 rounded">
+        Nluc
+        </button>
+    </div>
+
+    <div id='status' class='text-violet-600 text-2xl'></div>
+    <div id='gl'></div>
+
+    <h3 class="pt-2 order-1 text-2xl sm:text-4xl sm:leading-none font-extrabold tracking-tight text-teal-700 mb-4">Choose Style</h3>
+        <div class="justify-center mt-2 flex">
+            <button id='preset' class="mr-2 bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">
+            Preset
+            </button>
+            <button id='cartoon' class="mr-2 bg-lime-500 hover:bg-lime-700 text-white font-bold py-2 px-4 rounded">
+            Cartoon
+            </button>
+            <button id='tube' class="mr-2 bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">
+            Tube
+            </button>
+            <button id='spheres' class="mr-2 bg-emerald-500 hover:bg-emerald-700 text-white font-bold py-2 px-4 rounded">
+            Spheres
+            </button>
+            <button id='ballsAndSticks' class="mr-2 bg-teal-500 hover:bg-teal-700 text-white font-bold py-2 px-4 rounded">
+            BallsAndSticks
+            </button>
+            <button id='points'  class="mr-2 bg-cyan-500 hover:bg-cyan-700 text-white font-bold py-2 px-4 rounded">
+            Points
+            </button>
+            <button id='sline'  class="mr-2 bg-sky-500 hover:bg-sky-700 text-white font-bold py-2 px-4 rounded">
+            Sline
+            </button>
+            <button id='lines'  class="mr-2 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+            Lines
+            </button>
+            <button id='trace'  class="mr-2 bg-indigo-500 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded">
+            Trace
+            </button>
+            <button id='lineTrace'  class="mr-2 bg-violet-500 hover:bg-violet-700 text-white font-bold py-2 px-4 rounded">
+            LineTrace
+            </button>
+        </div>
+
+
+
+
+  <script src="https://cdn.jsdelivr.net/npm/bio-pv@1.8.1/bio-pv.min.js"></script>
+  <script>
+    var viewer = pv.Viewer(document.getElementById('gl'), 
+                           { quality : 'medium', width: '600', height : '400',
+                             antialias : true, outline : true, background : 'white'});
+    var structure;
+    console.log(viewer);
+
+
+    function preset() {
+      viewer.clear();
+      var ligand = structure.select({rnames : ['RVP', 'SAH']});
+      viewer.ballsAndSticks('ligand', ligand);
+      viewer.cartoon('protein', structure);
+    }    
+    function cartoon() {
+      viewer.clear();
+      viewer.cartoon('structure', structure, { color: color.ssSuccession() });
+    }
+    function tube() {
+      viewer.clear();
+      viewer.tube('structure', structure);
+    }
+    function spheres() {
+      viewer.clear();
+      viewer.spheres('structure', structure);
+    }
+    function ballsAndSticks() {
+      viewer.clear();
+      viewer.ballsAndSticks('structure', structure);
+    }
+    function points() {
+      viewer.clear();
+      viewer.points('structure', structure);
+    }
+    function sline() {
+      viewer.clear();
+      viewer.sline('structure', structure);
+    }
+    function lines() {
+      viewer.clear();
+      viewer.lines('structure', structure);
+    }
+    function trace() {
+      viewer.clear();
+      viewer.trace('structure', structure);
+    }
+    function lineTrace() {
+      viewer.clear();
+      viewer.lineTrace('structure', structure);
+    }
+
+
+    function load(pdb_id) {
+      document.getElementById('status').innerHTML ='loading '+pdb_id;
+      var xhr = new XMLHttpRequest();
+      xhr.open('GET', 'https://files.rcsb.org/download/'+pdb_id+'.pdb');
+      xhr.setRequestHeader('Content-type', 'application/x-pdb');
+      xhr.onreadystatechange = function() {
+        if (xhr.readyState == 4) {
+          structure = pv.io.pdb(xhr.responseText);
+          preset();
+          viewer.centerOn(structure);
+        }
+        document.getElementById('status').innerHTML = '';
+      }
+      xhr.send();
+    }
+    function transferase() {
+       load('5B61');
+    }
+
+    function load_GFP() {
+        load('5B61');
+    }
+
+    function load_Nluc(){
+        load('5IBO');
+        console.log('nluc');
+    }
+
+    document.getElementById('preset').onclick = preset;
+    document.getElementById('cartoon').onclick = cartoon;
+    document.getElementById('tube').onclick = tube;
+    document.getElementById('spheres').onclick = spheres;
+    document.getElementById('ballsAndSticks').onclick = ballsAndSticks;
+    document.getElementById('points').onclick = points;   
+    document.getElementById('sline').onclick = sline;
+    document.getElementById('lines').onclick = lines;
+    document.getElementById('trace').onclick = trace;
+    document.getElementById('lineTrace').onclick = lineTrace;
+
+
+
+    window.onresize = function(event) {
+      viewer.fitParent();
+    }
+    document.addEventListener('DOMContentLoaded', transferase);
+  </script>
+
+
+{%endblock content%}

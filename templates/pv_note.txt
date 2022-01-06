@@ -1,0 +1,27 @@
+var options = {
+      width : (opts.width || 500),
+      height : (opts.height || 500),
+      animateTime : (opts.animateTime || 0),
+      antialias : opts.antialias,
+      forceManualAntialiasing: optValue(opts, 'forceManualAntialiasing', true),
+      quality : optValue(opts, 'quality', 'low'),
+      style : optValue(opts, 'style', 'hemilight'),
+      background : color.forceRGB(opts.background || 'white'),
+      slabMode : slabModeToStrategy(opts.slabMode),
+      outline : optValue(opts, 'outline', true),
+      outlineColor : color.forceRGB(optValue(opts, 'outlineColor', 'black')),
+      outlineWidth: optValue(opts, 'outlineWidth', 1.5),
+      selectionColor : color.forceRGB(optValue(opts, 'selectionColor', '#3f3'), 
+                                      0.7),
+      fov : optValue(opts, 'fov', 45.0),
+      doubleClick : getDoubleClickHandler(opts),
+      click : getClickHandler(opts),
+      fog : optValue(opts, 'fog', true),
+      transparency : optValue(opts, 'transparency', 'alpha'),
+      noKeyboardGrab : optValue(opts, 'noKeyboardGrab', false),
+    };
+
+RENDER_MODES : [ 
+    'sline', 'lines', 'trace', 'lineTrace', 'cartoon', 'tube', 'spheres', 
+    'ballsAndSticks', 'points'
+  ]
