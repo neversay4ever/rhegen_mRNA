@@ -27,7 +27,9 @@ urlpatterns = [
     path('', TemplateView.as_view(template_name='home.html'), name='home'),
     path('demo/', DataListView.as_view(), name='demo'),
     path('utr5/', UTR5ListView.as_view(), name='utr5'),
-    path('struc/', TemplateView.as_view(template_name='structure.html'), name='struc'),
+    path('cds/', TemplateView.as_view(template_name='cds.html'), name='cds'),
+    path('utr3/', TemplateView.as_view(template_name='utr3.html'), name='utr3'),
+    path('struc/', TemplateView.as_view(template_name='struc.html'), name='struc'),
     path('pdb/', TemplateView.as_view(template_name='pdb_structure_template.html'), name='pdb'),
 
 ]
