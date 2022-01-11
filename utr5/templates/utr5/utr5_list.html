@@ -4,12 +4,12 @@
     
 
 {%block content%}
-    <div id="root" class='container mx-10'></div>
 <div>
-
     {% render_table object_list %}
-
 </div>
+    
+<div id="root" class='container pr-10'></div>
+
     <script>
       window.seqviz
       .Viewer("root", {

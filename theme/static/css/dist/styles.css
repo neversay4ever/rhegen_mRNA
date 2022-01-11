@@ -875,6 +875,10 @@ select {
   margin-left: 0.5rem;
 }
 
+.mr-10 {
+  margin-right: 2.5rem;
+}
+
 .block {
   display: block;
 }
@@ -1588,6 +1592,10 @@ select {
 
 .pl-9 {
   padding-left: 2.25rem;
+}
+
+.pr-10 {
+  padding-right: 2.5rem;
 }
 
 .text-left {
