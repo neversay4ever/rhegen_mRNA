@@ -1,0 +1,15 @@
+{%extends 'base.html'%}
+
+{%block content%}
+  <script src="https://cdn.tailwindcss.com"></script>
+
+{{aa_print | safe}}
+
+{%for i in gfp_aa%}
+<tr>
+    <td >{{i}}</td>
+</tr>
+{%endfor%}
+
+
+{%endblock content%}

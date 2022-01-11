@@ -49,6 +49,7 @@ INSTALLED_APPS = [
     'demo',
 
     'utr5',
+    'cds',
 
 ]
 

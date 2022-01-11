@@ -21,13 +21,15 @@ from django.views.generic.list import ListView
 from django.urls import path
 from demo.views import DataListView
 from utr5.views import UTR5ListView
+from cds.views import codon_optimize
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', TemplateView.as_view(template_name='home.html'), name='home'),
     path('demo/', DataListView.as_view(), name='demo'),
+    path('plasmid/', TemplateView.as_view(template_name='plasmid.html'), name='plasmid'),
     path('utr5/', UTR5ListView.as_view(), name='utr5'),
-    path('cds/', TemplateView.as_view(template_name='cds.html'), name='cds'),
+    path('cds/', codon_optimize, name='cds'),
     path('utr3/', TemplateView.as_view(template_name='utr3.html'), name='utr3'),
     path('struc/', TemplateView.as_view(template_name='struc.html'), name='struc'),
     path('pdb/', TemplateView.as_view(template_name='pdb_structure_template.html'), name='pdb'),
