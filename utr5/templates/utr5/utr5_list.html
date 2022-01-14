@@ -1,33 +1,111 @@
 {%extends 'base.html' %}
-{% load render_table from django_tables2 %}
 
-    
 
 {%block content%}
-<div>
-    {% render_table object_list %}
+<div class='container mx-auto'>
+  <div id="root" class='container pr-10'></div>
 </div>
-    
-<div id="root" class='container pr-10'></div>
+
+
+<table class="divide-y divide-gray-300" id="dataTable-utr5">
+  <thead>
+      <tr>
+          <th></th>
+          <th class="px-6 py-3 text-left text-sm font-medium text-gray-500 uppercase tracking-wider">
+              UTR5编号
+          </th>
+          <th class="px-6 py-3 text-left text-sm font-medium text-gray-500 uppercase tracking-wider">
+              UTR5备注
+          </th>
+          <th class="px-6 py-3 text-left text-sm font-medium text-gray-500 uppercase tracking-wider">
+              UTR5序列
+          </th>
+      </tr>
+  </thead>
+  <tbody class="bg-white divide-y divide-gray-300">
+      {% for utr in object_list %}
+      <tr class="text-center whitespace-nowrap">
+          <td class="truncate px-5 py-5 border-b border-gray-200 text-sm text-gray-800">
+                <button onclick='clickseq(this.id)' id={{utr.utr5_id}} data-seq={{utr.utr5_seq}} data-note={{utr.utr5_note}} class="bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded">
+                  View
+                </button>          
+          </td>
+          <td class="truncate px-5 py-5 border-b border-gray-200 text-sm text-gray-800">
+              {{utr.utr5_id}}
+          </td>
+          <td class="truncate px-5 py-5 border-b border-gray-200 text-sm text-gray-800">
+              {{utr.utr5_note}}
+          </td>
+          <td class="truncate px-5 py-5 border-b border-gray-200 text-sm text-gray-800 text-clip">
+              {{utr.utr5_seq}}
+          </td>
+      </tr>
+      {% endfor %}
+      </tbody>
+</table>
 
     <script>
+        $(document).ready(function () {
+            $('#dataTable-utr5').DataTable({
+                "scrollX":true,
+                "autoWidth": false,
+                "columnDefs": [{ width: "10%", targets: [0,1] },
+                              {className:'dt-left',targets:[0,1,2,3]},
+                              {orderable: false, targets: 0}],
+                
+            });
+
+        });
+    </script>
+
+
+    <script>
+      var seqinfo="AATCTCAGAGGTAGGGCTGCCACCAAGGTGAAGATGGGAACGCAGATGATCCATGAGTTTGCCCTGGTTTCACTGGCCCAAGTGGTTTGTGCTAACCACGTCTGTCTTCACAGCTCTGTGTTGCCATGTGTGCTGAACAAAAAATAAAAATTATTATTGATTTTATATTTCAAAAACTCCATTCTTTCCTAAATATTTTCAACAAAGGATTTCTTTATGCATTCTGCCTAAATACCTATGCAACTGAGCCCTTCCTTCTCAGCTCAAGATTCGTCTGGTCTTTCCCTACAGCTTTGTGTGTGCCATGGCCACATCTCCTGGGTACAGTTCAAGGAGACATCTTTTCTAAAAGGGTCTGCGTGATCATTAAAATATAATCAAATGTA";
+      
       window.seqviz
-      .Viewer("root", {
-          name: "TF",
-          seq: "AATCTCAGAGGTAGGGCTGCCACCAAGGTGAAGATGGGAACGCAGATGATCCATGAGTTTGCCCTGGTTTCACTGGCCCAAGTGGTTTGTGCTAACCACGTCTGTCTTCACAGCTCTGTGTTGCCATGTGTGCTGAACAAAAAATAAAAATTATTATTGATTTTATATTTCAAAAACTCCATTCTTTCCTAAATATTTTCAACAAAGGATTTCTTTATGCATTCTGCCTAAATACCTATGCAACTGAGCCCTTCCTTCTCAGCTCAAGATTCGTCTGGTCTTTCCCTACAGCTTTGTGTGTGCCATGGCCACATCTCCTGGGTACAGTTCAAGGAGACATCTTTTCTAAAAGGGTCTGCGTGATCATTAAAATATAATCAAATGTA",
-          style: { height: "100vh", width: "100vw" },
-          onSelection: selection => console.log(selection),
-          annotations: [
-          {
-            "start": 0,
-            "end": 11,
-            "direction": 1,
-            "name": "HERO",
-            "type": "ANNOTATION",
-            "color": "#80D849"
-          }
-        ]
-      }).render();
+          .Viewer("root", {
+              name: 'Demo',
+              seq: seqinfo,
+              style: { height: "100vh", width: "100vw" },
+              onSelection: selection => console.log(selection),
+              annotations: [
+              {
+                "start": 0,
+                "end": 11,
+                "direction": 1,
+                "name": "DemoSignal",
+                "type": "ANNOTATION",
+                "color": "#80D849"
+              }
+            ]
+          }).render();
+
+      function clickseq(id){
+        var ele = document.getElementById(id);
+        console.log(ele);
+        seqinfo = ele.dataset.seq;
+        name = ele.dataset.note
+        console.log(seqinfo);
+      
+        window.seqviz
+          .Viewer("root", {
+              name: name,
+              seq: seqinfo,
+              style: { height: "100vh", width: "100vw" },
+              onSelection: selection => console.log(selection),
+              annotations: [
+              {
+                "start": 0,
+                "end": 11,
+                "direction": 1,
+                "name": "HERO",
+                "type": "ANNOTATION",
+                "color": "#80D849"
+              }
+            ]
+          }).render();
+      }
+
     </script>
 
 {%endblock content%}

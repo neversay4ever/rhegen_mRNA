@@ -1,15 +1,126 @@
 {%extends 'base.html'%}
 
+
 {%block content%}
   <script src="https://cdn.tailwindcss.com"></script>
 
-{{aa_print | safe}}
+<div >
+    <table class="divide-y divide-gray-300 my-10" id="dataTable-codon">
+        <thead>
+            <tr>
+                <th class="px-6 py-3 text-left text-sm font-medium text-gray-500 uppercase tracking-wider">
+                    氨基酸缩写
+                </th>
+                <th class="px-6 py-3 text-left text-sm font-medium text-gray-500 uppercase tracking-wider">
+                    氨基酸简称
+                </th>
+                <th class="px-6 py-3 text-left text-sm font-medium text-gray-500 uppercase tracking-wider">
+                    氨基酸中文
+                </th>
+                <th class="px-6 py-3 text-left text-sm font-medium text-gray-500 uppercase tracking-wider">
+                    氨基酸属性
+                </th>
+                <th class="px-6 py-3 text-left text-sm font-medium text-gray-500 uppercase tracking-wider">
+                    密码子
+                </th>
+                <th class="px-6 py-3 text-left text-sm font-medium text-gray-500 uppercase tracking-wider">
+                    密码子比例
+                </th>
+                <th class="px-6 py-3 text-left text-sm font-medium text-gray-500 uppercase tracking-wider">
+                    密码子频率
+                </th>
+            </tr>
+        </thead>
+        <tbody class="bg-white divide-y divide-gray-300">
+            {% for codon in codons %}
+            <tr class="text-center whitespace-nowrap">
+                <td id='{{codon.aa_name}}' class="truncate px-5 py-5 border-b border-gray-200 text-sm text-gray-800">
+                    {{codon.aa_abbr}}
+                </td>
+                <td class="truncate px-5 py-5 border-b border-gray-200 text-sm text-purple-800">
+                    {{codon.aa_name}}
+                </td>
+                <td class="truncate px-5 py-5 border-b border-gray-200 text-sm text-gray-800 text-clip">
+                    {{codon.aa_cn}}
+                </td>
+                <td class="truncate px-5 py-5 border-b border-gray-200 text-sm text-gray-800">
+                    {{codon.aa_attr}}
+                </td>
+                <td class="truncate px-5 py-5 border-b border-gray-200 text-sm text-teal-600">
+                    {{codon.aa_dna}}
+                </td>
+                <td class="truncate px-5 py-5 border-b border-gray-200 text-sm text-gray-800 text-clip">
+                    {{codon.aa_ratio}}
+                </td>
+                <td class="truncate px-5 py-5 border-b border-gray-200 text-sm text-gray-800 text-clip">
+                    {{codon.aa_freq}}
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
 
-{%for i in gfp_aa%}
-<tr>
-    <td >{{i}}</td>
-</tr>
-{%endfor%}
+    <script>
+        $(document).ready(function () {
+            $('#dataTable-codon').DataTable({
+                "scrollX":true,
+                "autoWidth": false,
+                "columnDefs": [{ width: "10%", targets: [0,1] },
+                              {className:'dt-left',targets:[0,1,2,3,4,5,6]}]
+            });
+        });
+    </script>
+
+<div class='overflow-scroll py-2'>
+    <p class='text-xl font-semibold bg-transparent rounded-lg text-green-600'>Demo: GFP</p>  
+        {{gfp_refseq|upper}}
+</div>
+
+<button class="bg-cyan-500 hover:bg-cyan-700 text-white font-bold py-2 px-4 rounded"  hx-get='/cds/dnachisel_seq' hx-triggle='click' hx-target='#dnachisel_seq_show' hx-swap="innerHTML"> DNA chisel优化序列 </button> 
+<p>AvoidPattern:BspQI(GCTCTTC)) && EnforceGCContent[0-840](mini:0.30, maxi:0.70, window:50)</p> 
+    <div id='dnachisel_seq_show' >
+</div>
+
+<form  class ='py-2' hx-post='/cds/seq' hx-triggle='click, change' hx-target='#seq_show' hx-swap="innerHTML"> 
+    <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" type='submit' >提交并计算 </button>
+    {% csrf_token %}
+    <div class='flex overflow-scroll'>
+    {%for i in data%}
+        <div class='flex-col content-center'>
+            <p>{{forloop.counter}}</p>
+            <p  class='text-{{i.1}}-500 text-green-500'>{{i.0}}</p>
+            <select  name='{{forloop.counter}}' id='{{forloop.counter}}' class="text-gray-800 appearance-none seq-select" >
+                {% for s in i.2 %}
+                <option value="{{s}}">{{s}}</option>
+                {%endfor%}
+            </select>  
+            <p>{{forloop.counter}}</p>
+        </div>
+    {%endfor%}
+    </div>
+</form>
+
+
+<p id='seqs'></p>
+<div id='seq_show' > </div>
+
+<button class="bg-teal-500 hover:bg-teal-700 text-white font-bold py-4 px-4 rounded"  hx-get='/cds/eq_random_seq' hx-triggle='click' hx-target='#eq_random_seq_show' hx-swap="innerHTML"> 平均概率随机生成 </button>
+<div id='eq_random_seq_show' class='py-4' ></div>
+
+<button class="bg-purple-500 hover:bg-purple-700 text-white font-bold py-4 px-4 rounded"  hx-get='/cds/prob_random_seq' hx-triggle='click' hx-target='#prob_random_seq_show' hx-swap="innerHTML"> 密码子分布概率随机生成 </button>
+<div id='prob_random_seq_show' >
+</div>
+
+
 
 
 {%endblock content%}
+
+
+
+
+    
+
+
+    

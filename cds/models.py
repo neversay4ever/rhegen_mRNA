@@ -4,12 +4,12 @@ from django.utils.translation import ugettext as _
 
 
 class Record(models.Model):
-    job_id = models.CharField(_("任务编号"), max_length=100)
-    aa_seq = models.TextField(_("氨基酸序列"))
+    job_id = models.CharField(_("任务编号"), max_length=100, null=True, blank=True)
+    aa_seq = models.TextField(_("氨基酸序列"), null=True, blank=True)
     dna_seq = models.TextField(_("DNA序列"))
-    cai = models.FloatField(_("CAI值"))
-    gc = models.FloatField(_("GC含量"))
-    energy = models.FloatField(_("能量值"))
+    cai = models.FloatField(_("CAI值"), null=True, blank=True)
+    gc = models.FloatField(_("GC含量"), null=True, blank=True)
+    energy = models.FloatField(_("能量值"), null=True, blank=True)
 
 
 class Protein(models.Model):

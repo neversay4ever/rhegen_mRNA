@@ -21,7 +21,7 @@ from django.views.generic.list import ListView
 from django.urls import path
 from demo.views import DataListView
 from utr5.views import UTR5ListView
-from cds.views import codon_optimize
+from cds.views import codon_optimize, get_seq, eq_random_seq, prob_random_seq, dnachisel_seq
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -33,6 +33,11 @@ urlpatterns = [
     path('utr3/', TemplateView.as_view(template_name='utr3.html'), name='utr3'),
     path('struc/', TemplateView.as_view(template_name='struc.html'), name='struc'),
     path('pdb/', TemplateView.as_view(template_name='pdb_structure_template.html'), name='pdb'),
+    path('cds/seq', get_seq, name='seq'),
+    path('cds/eq_random_seq', eq_random_seq, name='eq_random_seq'),
+    path('cds/prob_random_seq', prob_random_seq, name='prob_random_seq'),
+    path('cds/dnachisel_seq', dnachisel_seq, name='dnachisel_seq'),
+    
 
 ]
 
