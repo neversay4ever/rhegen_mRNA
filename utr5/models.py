@@ -11,6 +11,9 @@ class UTR5(models.Model):
     
     @property
     def get_json_data(self):
-        return json.dumps(self.utr5_anno)
+        if self.utr5_anno is not None:
+            return json.dumps(self.utr5_anno)
+        else:
+            return None
     class Meta:
         verbose_name_plural = "UTR5"
