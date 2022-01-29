@@ -8,7 +8,7 @@ from .models import Record, Protein, Codon, Triplet
 from CAI import CAI
 import random
 from dnachisel import *
-
+import RNA
 
 def codon_optimize(request):
     gfp = Protein.objects.get(gene_name='GFP')
@@ -49,18 +49,25 @@ def get_seq(request):
     gfp = Protein.objects.get(gene_name='GFP')
     gfp_refseq = gfp.gene_default_seq
     cai_score = CAI(seq, reference=[gfp_refseq])
-    cai_score = round(cai_score, 4)
+    cai_score = round(cai_score, 3)
     gc_count = 0
     for i in list(seq):
         i = i.upper()
         if i == 'C' or i=="G":
             gc_count +=1
-    gc_ratio = round(gc_count/len(seq),4)
+    gc_ratio = round(gc_count/len(seq),3)
+    pair_seq = RNA.fold(seq)
+    print(pair_seq[0])
+    pair_seq[0] = ''.join(pair_seq[0])
+    print(pair_seq[0])
     context = {
         'seq': seq,
         'good': 'sfgsf',
         'cai_score': cai_score,
         'gc_ratio': gc_ratio,
+        'pair_seq':pair_seq[0],
+        'mfe':round(pair_seq[1],3),
+        'type':'get_seq',
     }
     return render(request, 'cds/seq.html', context)
 
@@ -78,18 +85,23 @@ def eq_random_seq(request):
     gfp_refseq = gfp.gene_default_seq
     cai_score = 0
     cai_score = CAI(seq, reference=[gfp_refseq])
-    cai_score = round(cai_score, 4)
+    cai_score = round(cai_score, 3)
     gc_count = 0
     for i in list(seq):
         i = i.upper()
         if i == 'C' or i=="G":
             gc_count +=1
-    gc_ratio = round(gc_count/len(seq),4)
+    gc_ratio = round(gc_count/len(seq),3)
     
+    pair_seq = RNA.fold(seq)
+
     context = {
         'seq': seq,
         'cai_score': cai_score,
-        'gc_ratio': gc_ratio
+        'gc_ratio': gc_ratio,
+        'pair_seq':pair_seq[0],
+        'mfe':round(pair_seq[1],3),
+        'type': 'eq_random_seq',
     }
     return render(request, 'cds/seq.html', context)
 
@@ -110,18 +122,22 @@ def prob_random_seq(request):
     gfp_refseq = gfp.gene_default_seq
     cai_score = 0
     cai_score = CAI(seq, reference=[gfp_refseq])
-    cai_score = round(cai_score, 4)
+    cai_score = round(cai_score, 3)
     gc_count = 0
     for i in list(seq):
         i = i.upper()
         if i == 'C' or i=="G":
             gc_count +=1
-    gc_ratio = round(gc_count/len(seq),4)
+    gc_ratio = round(gc_count/len(seq),3)
     
+    pair_seq = RNA.fold(seq)
     context = {
         'seq': seq,
         'cai_score': cai_score,
-        'gc_ratio': gc_ratio
+        'gc_ratio': gc_ratio,
+        'pair_seq':pair_seq[0],
+        'mfe':round(pair_seq[1],3),
+        'type':'prob_random_seq',
     }
     return render(request, 'cds/seq.html', context)
 
@@ -153,17 +169,21 @@ def dnachisel_seq(request):
 
     cai_score = 0
     cai_score = CAI(dnachisel_sequence, reference=[gfp_refseq])
-    cai_score = round(cai_score, 4)
+    cai_score = round(cai_score, 3)
     gc_count = 0
     for i in list(dnachisel_sequence):
         i = i.upper()
         if i == 'C' or i=="G":
             gc_count +=1
-    gc_ratio = round(gc_count/len(dnachisel_sequence),4)
+    gc_ratio = round(gc_count/len(dnachisel_sequence),3)
     
+    pair_seq = RNA.fold(dnachisel_sequence)
     context = {
         'seq': dnachisel_sequence,
         'cai_score': cai_score,
-        'gc_ratio': gc_ratio
+        'gc_ratio': gc_ratio,
+        'pair_seq':pair_seq[0],
+        'mfe':round(pair_seq[1],3),
+        'type':'dnachisel_seq',
     }
     return render(request, 'cds/seq.html', context)

@@ -77,13 +77,13 @@
         {{gfp_refseq|upper}}
 </div>
 
-<button class="bg-cyan-500 hover:bg-cyan-700 text-white font-bold py-2 px-4 rounded"  hx-get='/cds/dnachisel_seq' hx-triggle='click' hx-target='#dnachisel_seq_show' hx-swap="innerHTML"> DNA chisel优化序列 </button> 
+<button class="bg-sky-500 hover:bg-sky-700 text-white font-bold py-2 px-4 rounded"  hx-get='/cds/dnachisel_seq' hx-triggle='click' hx-target='#dnachisel_seq_show' hx-swap="innerHTML"> DNA chisel优化序列 </button> 
 <p>AvoidPattern:BspQI(GCTCTTC)) && EnforceGCContent[0-840](mini:0.30, maxi:0.70, window:50)</p> 
     <div id='dnachisel_seq_show' >
 </div>
 
 <form  class ='py-2' hx-post='/cds/seq' hx-triggle='click, change' hx-target='#seq_show' hx-swap="innerHTML"> 
-    <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" type='submit' >提交并计算 </button>
+    <button class="bg-emerald-500 hover:bg-emerald-700 text-white font-bold py-2 px-4 rounded" type='submit' >提交并计算 </button>
     {% csrf_token %}
     <div class='flex overflow-scroll'>
     {%for i in data%}
@@ -105,14 +105,12 @@
 <p id='seqs'></p>
 <div id='seq_show' > </div>
 
-<button class="bg-teal-500 hover:bg-teal-700 text-white font-bold py-4 px-4 rounded"  hx-get='/cds/eq_random_seq' hx-triggle='click' hx-target='#eq_random_seq_show' hx-swap="innerHTML"> 平均概率随机生成 </button>
+<button class="bg-teal-500 hover:bg-teal-700 text-white font-bold py-2 px-4 rounded"  hx-get='/cds/eq_random_seq' hx-triggle='click' hx-target='#eq_random_seq_show' hx-swap="innerHTML"> 平均概率随机生成 </button>
 <div id='eq_random_seq_show' class='py-4' ></div>
 
-<button class="bg-purple-500 hover:bg-purple-700 text-white font-bold py-4 px-4 rounded"  hx-get='/cds/prob_random_seq' hx-triggle='click' hx-target='#prob_random_seq_show' hx-swap="innerHTML"> 密码子分布概率随机生成 </button>
+<button class="bg-cyan-500 hover:bg-cyan-700 text-white font-bold py-2 px-4 rounded"  hx-get='/cds/prob_random_seq' hx-triggle='click' hx-target='#prob_random_seq_show' hx-swap="innerHTML"> 密码子分布概率随机生成 </button>
 <div id='prob_random_seq_show' >
 </div>
-
-
 
 
 {%endblock content%}
